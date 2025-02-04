@@ -9,7 +9,7 @@ public interface JobService {
     Job getJobById(Long id);
     Job createJob(Job job);
     Job updateJob(Long id, Job job);
-    void deleteJob(Long id);
+    boolean deleteJob(Long id);
     String getCompanyForJob(Long id);
 
 }
