@@ -1,23 +1,32 @@
-package com.driden.job_app_springboot.model;
+package com.driden.job_services.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "tbl_jobsdb")
 public class Job {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     private String title;
     private String description;
     private String minSalary;
     private String maxSalary;
     private String location;
+    private String company;
 
     public Job() {
     }
 
-    public Job(Long id, String location, String maxSalary, String minSalary, String description, String title) {
+    public Job(Long id, String location, String maxSalary, String minSalary, String description, String title, String company) {
         this.id = id;
         this.location = location;
         this.maxSalary = maxSalary;
         this.minSalary = minSalary;
         this.description = description;
         this.title = title;
+        this.company = company;
     }
 
     public Long getId() {
@@ -66,5 +75,13 @@ public class Job {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 }

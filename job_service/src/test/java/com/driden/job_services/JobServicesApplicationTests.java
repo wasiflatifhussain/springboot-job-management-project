@@ -1,10 +1,10 @@
-package com.driden.job_app_springboot;
+package com.driden.job_services;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JobAppSpringbootApplicationTests {
+class JobServicesApplicationTests {
 
 	@Test
 	void contextLoads() {

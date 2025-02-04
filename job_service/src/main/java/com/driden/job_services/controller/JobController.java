@@ -1,13 +1,12 @@
-package com.driden.job_app_springboot.job;
+package com.driden.job_services.controller;
 
-import com.driden.job_app_springboot.model.Job;
-import com.driden.job_app_springboot.service.JobService;
+import com.driden.job_services.model.Job;
+import com.driden.job_services.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -68,14 +67,9 @@ public class JobController {
         }
     }
 
-    // GET /api/jobs/{id}/company: get company for job with id
-    @GetMapping("/jobs/{id}/company")
-    public ResponseEntity<String> getCompanyForJob(@PathVariable Long id) {
-        String company = jobService.getCompanyForJob(id);
-        if (company == "None") {
-            return new ResponseEntity<>("Company not found", HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(company, HttpStatus.OK);
-        }
+    // GET /api/jobs/company: get all jobs for company
+    @GetMapping("/jobs/company/{companyName}")
+    public ResponseEntity<List<Job>> getJobsByCompanyName(@PathVariable String companyName) {
+        return new ResponseEntity<>(jobService.getJobsByCompanyName(companyName), HttpStatus.OK);
     }
 }

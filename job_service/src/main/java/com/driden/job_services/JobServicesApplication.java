@@ -1,13 +1,13 @@
-package com.driden.job_app_springboot;
+package com.driden.job_services;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JobAppSpringbootApplication {
+public class JobServicesApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JobAppSpringbootApplication.class, args);
+		SpringApplication.run(JobServicesApplication.class, args);
 	}
 
 }
