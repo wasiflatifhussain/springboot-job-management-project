@@ -41,6 +41,7 @@ public class JobDaoImplementation implements JobDao {
         jobToUpdate.setMinSalary(job.getMinSalary());
         jobToUpdate.setMaxSalary(job.getMaxSalary());
         jobToUpdate.setLocation(job.getLocation());
+        jobToUpdate.setApplicantIds(job.getApplicantIds());
         // jobToUpdate.setCompanyId(job.getCompanyId());   // changing company name is not allowed
         session.saveOrUpdate(jobToUpdate);
         return jobToUpdate;
@@ -74,4 +75,6 @@ public class JobDaoImplementation implements JobDao {
                 .getResultList();
         return jobs;
     }
+
+
 }

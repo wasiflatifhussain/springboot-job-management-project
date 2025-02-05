@@ -78,4 +78,5 @@ public class JobController {
         System.out.println(jobIds);
         return new ResponseEntity<>(jobService.fetchJobsByIds(jobIds), HttpStatus.OK);
     }
+
 }
