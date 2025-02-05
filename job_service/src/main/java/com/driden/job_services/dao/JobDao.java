@@ -10,5 +10,6 @@ public interface JobDao {
     Job createJob(Job job);
     Job updateJob(Long id, Job job);
     boolean deleteJob(Long id);
-    List<Job> getJobsByCompanyName(String companyName);
+    List<Job> getJobsByCompanyId(Long companyId);
+    List<Job> fetchJobsByIds(List<Long> jobIds);
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/job-service")
 public class JobController {
 
     @Autowired
@@ -68,8 +68,14 @@ public class JobController {
     }
 
     // GET /api/jobs/company: get all jobs for company
-    @GetMapping("/jobs/company/{companyName}")
-    public ResponseEntity<List<Job>> getJobsByCompanyName(@PathVariable String companyName) {
-        return new ResponseEntity<>(jobService.getJobsByCompanyName(companyName), HttpStatus.OK);
+    @GetMapping("/jobs/company/{companyId}")
+    public ResponseEntity<List<Job>> getJobsByCompanyId(@PathVariable Long companyId) {
+        return new ResponseEntity<>(jobService.getJobsByCompanyId(companyId), HttpStatus.OK);
+    }
+
+    @PostMapping("/jobs/company/fetch-jobs-by-ids")
+    public ResponseEntity<List<Job>> fetchJobsByIds(@RequestBody List<Long> jobIds) {
+        System.out.println(jobIds);
+        return new ResponseEntity<>(jobService.fetchJobsByIds(jobIds), HttpStatus.OK);
     }
 }

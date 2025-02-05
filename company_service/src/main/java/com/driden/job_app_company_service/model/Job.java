@@ -1,4 +1,4 @@
-package com.driden.job_services.model;
+package com.driden.job_app_company_service.model;
 
 import jakarta.persistence.*;
 
@@ -84,4 +84,5 @@ public class Job {
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
+
 }

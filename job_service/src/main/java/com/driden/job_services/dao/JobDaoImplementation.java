@@ -41,7 +41,7 @@ public class JobDaoImplementation implements JobDao {
         jobToUpdate.setMinSalary(job.getMinSalary());
         jobToUpdate.setMaxSalary(job.getMaxSalary());
         jobToUpdate.setLocation(job.getLocation());
-        jobToUpdate.setCompany(job.getCompany());
+        // jobToUpdate.setCompanyId(job.getCompanyId());   // changing company name is not allowed
         session.saveOrUpdate(jobToUpdate);
         return jobToUpdate;
     }
@@ -58,10 +58,19 @@ public class JobDaoImplementation implements JobDao {
     }
 
     @Override
-    public List<Job> getJobsByCompanyName(String companyName) {
+    public List<Job> getJobsByCompanyId(Long companyId) {
         Session session = entityManager.unwrap(Session.class);
-        List<Job> jobs = session.createQuery("from Job where company = :companyName", Job.class)
-                .setParameter("companyName", companyName)
+        List<Job> jobs = session.createQuery("from Job where companyId = :companyId", Job.class)
+                .setParameter("companyId", companyId)
+                .getResultList();
+        return jobs;
+    }
+
+    @Override
+    public List<Job> fetchJobsByIds(List<Long> jobIds) {
+        Session session = entityManager.unwrap(Session.class);
+        List<Job> jobs = session.createQuery("from Job where id in (:jobIds)", Job.class)
+                .setParameter("jobIds", jobIds)
                 .getResultList();
         return jobs;
     }

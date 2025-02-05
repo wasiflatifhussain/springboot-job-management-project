@@ -68,7 +68,12 @@ public class JobServiceImplementation implements JobService {
 
     @Transactional
     @Override
-    public List<Job> getJobsByCompanyName(String companyName) {
-        return jobDao.getJobsByCompanyName(companyName);
+    public List<Job> getJobsByCompanyId(Long companyId) {
+        return jobDao.getJobsByCompanyId(companyId);
+    }
+
+    @Override
+    public List<Job> fetchJobsByIds(List<Long> jobIds) {
+        return jobDao.fetchJobsByIds(jobIds);
     }
 }
