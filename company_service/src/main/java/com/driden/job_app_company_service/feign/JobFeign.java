@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @FeignClient(name="job-service")
-public interface CompanyFeign {
+public interface JobFeign {
 
     // get all jobs for the company
     @PostMapping("/job-service/jobs/company/fetch-jobs-by-ids")
@@ -25,5 +25,8 @@ public interface CompanyFeign {
     // delete a job post for the company
     @DeleteMapping("/job-service/jobs/{id}")
     public ResponseEntity<String> deleteJob(@PathVariable Long id);
+
+    @GetMapping("/job-service/jobs/{id}")
+    public ResponseEntity<Job> getJobById(@PathVariable Long id);
 
 }

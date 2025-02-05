@@ -1,9 +1,13 @@
 package com.driden.job_app_company_service.service;
 
 import com.driden.job_app_company_service.dao.CompanyDao;
-import com.driden.job_app_company_service.feign.CompanyFeign;
+import com.driden.job_app_company_service.feign.JobFeign;
+import com.driden.job_app_company_service.feign.ReviewFeign;
+import com.driden.job_app_company_service.feign.UserFeign;
 import com.driden.job_app_company_service.model.Company;
 import com.driden.job_app_company_service.model.Job;
+import com.driden.job_app_company_service.model.Review;
+import com.driden.job_app_company_service.model.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +22,13 @@ public class CompanyServiceImplementation implements CompanyService {
     private CompanyDao companyDao;
 
     @Autowired
-    private CompanyFeign companyFeign;
+    private JobFeign jobFeign;
+
+    @Autowired
+    private ReviewFeign reviewFeign;
+
+    @Autowired
+    private UserFeign userFeign;
 
     @Transactional
     @Override
@@ -59,7 +69,7 @@ public class CompanyServiceImplementation implements CompanyService {
         System.out.println("jobIds: " + jobIds);
         System.out.println("jobIds size: " + jobIds.size());
 
-        ResponseEntity<List<Job>> response = companyFeign.fetchJobsByIds(jobIds);
+        ResponseEntity<List<Job>> response = jobFeign.fetchJobsByIds(jobIds);
         return response.getBody(); // Extract List<Job> from ResponseEntity
     }
 
@@ -80,7 +90,7 @@ public class CompanyServiceImplementation implements CompanyService {
         // reset company name in job to prevent malicious changes
         job.setCompanyId(company.getId());
 
-        ResponseEntity<Job> response = companyFeign.updateJob(jobId, job);
+        ResponseEntity<Job> response = jobFeign.updateJob(jobId, job);
         if (response.getBody() == null) {
             return null;
         }
@@ -100,7 +110,7 @@ public class CompanyServiceImplementation implements CompanyService {
             return false;
         }
 
-        ResponseEntity<String> response = companyFeign.deleteJob(id);
+        ResponseEntity<String> response = jobFeign.deleteJob(id);
         if (response.getBody().equals("Job deleted")) {
             // remove job id from company jobids list
             boolean deleteFromJobList = companyDao.deleteJobIdFromCompany(companyId, id);
@@ -130,11 +140,60 @@ public class CompanyServiceImplementation implements CompanyService {
             System.out.println("Company does not exist");
             return null;
         }
-        ResponseEntity<Job> response = companyFeign.createJob(job);
+        ResponseEntity<Job> response = jobFeign.createJob(job);
         if (response.getBody() == null) {
             return null;
         }
         return response.getBody();
+    }
+
+    @Transactional
+    @Override
+    public List<Review> getReviewsByCompanyId(Long companyId) {
+        // first check if company exists
+        // then get list of review ids from CompanyDao
+
+        Company company = companyDao.getCompanyById(companyId);
+        if (company == null) {
+            return null;
+        }
+
+        List<Long> reviewIds = company.getReviewIds();
+        System.out.println("reviewIds: " + reviewIds);
+        System.out.println("reviewIds size: " + reviewIds.size());
+
+        ResponseEntity<List<Review>> response = reviewFeign.fetchReviewsByIds(reviewIds);
+        return response.getBody(); // Extract List<Review> from ResponseEntity
+
+    }
+
+    @Override
+    public List<User> viewApplicationsForJob(Long companyId, Long jobId) {
+        // first check if company exists
+        // then get list of job ids from CompanyDao
+        // then search if jobId is in list
+        // if it is, make request to job-service to get job post
+        // then get list of user ids from job post
+        // then make request to user-service to get user by id
+        // if not, return null
+
+        Company company = companyDao.getCompanyById(companyId);
+        if (company == null) {
+            return null;
+        }
+        List<Long> jobIds = company.getJobIds();
+        if (!jobIds.contains(jobId)) {
+            return null;
+        }
+
+        ResponseEntity<Job> response = jobFeign.getJobById(jobId);
+        if (response.getBody() == null) {
+            return null;
+        }
+        List<Long> applicantIds = response.getBody().getApplicantIds();
+
+        ResponseEntity<List<User>> userResponse = userFeign.getUsersByIds(applicantIds);
+        return userResponse.getBody();
     }
 
 

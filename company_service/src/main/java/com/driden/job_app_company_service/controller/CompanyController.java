@@ -3,6 +3,8 @@ package com.driden.job_app_company_service.controller;
 
 import com.driden.job_app_company_service.model.Company;
 import com.driden.job_app_company_service.model.Job;
+import com.driden.job_app_company_service.model.Review;
+import com.driden.job_app_company_service.model.User;
 import com.driden.job_app_company_service.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -120,6 +122,17 @@ public class CompanyController {
         }
     }
 
+    // GET /companies/get-all-reviews/{companyId} - get all reviews for a company (by working with review service)
+    @GetMapping("/companies/get-all-reviews/{companyId}")
+    public ResponseEntity<List<Review>> getAllReviewsByCompanyId(@PathVariable Long companyId) {
+        return new ResponseEntity<>(companyService.getReviewsByCompanyId(companyId), HttpStatus.OK);
+    }
+
+    // GET /companies/view-applications-for-job/{companyId}/{jobId} - get all applications for a job (by working with job service and user service)
+    @GetMapping("/companies/view-applications-for-job/{companyId}/{jobId}")
+    public ResponseEntity<List<User>> viewApplicationsForJob(@PathVariable Long companyId, @PathVariable Long jobId) {
+        return new ResponseEntity<>(companyService.viewApplicationsForJob(companyId, jobId), HttpStatus.OK);
+    }
 
 
 }
