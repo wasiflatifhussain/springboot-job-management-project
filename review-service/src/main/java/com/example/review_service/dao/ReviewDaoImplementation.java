@@ -2,6 +2,7 @@ package com.example.review_service.dao;
 
 import com.example.review_service.model.Review;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,12 +14,14 @@ public class ReviewDaoImplementation implements ReviewDao {
     @Autowired
     private EntityManager entityManager;
 
+    @Transactional
     @Override
     public List<Review> getAllReviews() {
         Session session = entityManager.unwrap(Session.class);
         return session.createQuery("from Review", Review.class).getResultList();
     }
 
+    @Transactional
     @Override
     public Review createReview(Review review) {
         Session session = entityManager.unwrap(Session.class);
@@ -26,12 +29,14 @@ public class ReviewDaoImplementation implements ReviewDao {
         return review;
     }
 
+    @Transactional
     @Override
     public Review getReviewById(Long id) {
         Session session = entityManager.unwrap(Session.class);
         return session.get(Review.class, id);
     }
 
+    @Transactional
     @Override
     public Review updateReview(Long id, Review review) {
         Session session = entityManager.unwrap(Session.class);
@@ -42,6 +47,7 @@ public class ReviewDaoImplementation implements ReviewDao {
         return reviewToUpdate;
     }
 
+    @Transactional
     @Override
     public boolean deleteReview(Long id) {
         Session session = entityManager.unwrap(Session.class);
@@ -53,6 +59,7 @@ public class ReviewDaoImplementation implements ReviewDao {
         return true;
     }
 
+    @Transactional
     @Override
     public List<Review> fetchReviewsByIds(List<Long> reviewIds) {
         Session session = entityManager.unwrap(Session.class);
