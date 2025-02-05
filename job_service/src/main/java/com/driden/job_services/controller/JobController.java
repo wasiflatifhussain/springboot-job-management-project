@@ -22,7 +22,7 @@ public class JobController {
         return new ResponseEntity<>(jobService.getAllJobs(), HttpStatus.OK);
     }
 
-    // GET /api/jobs/{id}: get job with id
+    // GET /jobs/{id}: get job with id
     @GetMapping("/jobs/{id}")
     public ResponseEntity<Job> getJobById(@PathVariable Long id) {
         Job job = jobService.getJobById(id);
@@ -34,7 +34,7 @@ public class JobController {
 
     }
 
-    // POST /api/jobs: create new job
+    // POST /jobs: create new job
     @PostMapping("/jobs")
     public ResponseEntity<Job> createJob(@RequestBody Job job) {
         try {
@@ -45,7 +45,7 @@ public class JobController {
         }
     }
 
-    // PUT /api/jobs/{id}: update job with id
+    // PUT /jobs/{id}: update job with id
     @PutMapping("/jobs/{id}")
     public ResponseEntity<Job> updateJob(@PathVariable Long id, @RequestBody Job job) {
         try {
@@ -56,7 +56,7 @@ public class JobController {
         }
     }
 
-    // DELETE /api/jobs/{id}: delete job with id
+    // DELETE /jobs/{id}: delete job with id
     @DeleteMapping("/jobs/{id}")
     public ResponseEntity<String> deleteJob(@PathVariable Long id) {
         boolean status = jobService.deleteJob(id);
@@ -67,16 +67,24 @@ public class JobController {
         }
     }
 
-    // GET /api/jobs/company: get all jobs for company
+    // GET /jobs/company: get all jobs for company
     @GetMapping("/jobs/company/{companyId}")
     public ResponseEntity<List<Job>> getJobsByCompanyId(@PathVariable Long companyId) {
         return new ResponseEntity<>(jobService.getJobsByCompanyId(companyId), HttpStatus.OK);
     }
 
+    // POST /jobs/company/fetch-jobs-by-ids: get all jobs for list of ids
     @PostMapping("/jobs/company/fetch-jobs-by-ids")
     public ResponseEntity<List<Job>> fetchJobsByIds(@RequestBody List<Long> jobIds) {
         System.out.println(jobIds);
         return new ResponseEntity<>(jobService.fetchJobsByIds(jobIds), HttpStatus.OK);
     }
+
+    // GET /jobs/get-jobs-by-name/{jobName}: get all jobs with job name
+    @GetMapping("/jobs/get-jobs-by-name")
+    public ResponseEntity<List<Job>> getJobsByName(@RequestParam String jobName) {
+        return new ResponseEntity<>(jobService.getJobsByName(jobName), HttpStatus.OK);
+    }
+
 
 }

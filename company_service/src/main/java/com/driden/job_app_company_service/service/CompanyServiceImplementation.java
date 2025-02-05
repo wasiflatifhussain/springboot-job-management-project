@@ -167,6 +167,7 @@ public class CompanyServiceImplementation implements CompanyService {
 
     }
 
+    @Transactional
     @Override
     public List<User> viewApplicationsForJob(Long companyId, Long jobId) {
         // first check if company exists
@@ -194,6 +195,12 @@ public class CompanyServiceImplementation implements CompanyService {
 
         ResponseEntity<List<User>> userResponse = userFeign.getUsersByIds(applicantIds);
         return userResponse.getBody();
+    }
+
+    @Transactional
+    @Override
+    public Company getCompanyByName(String name) {
+        return companyDao.getCompanyByName(name);
     }
 
 

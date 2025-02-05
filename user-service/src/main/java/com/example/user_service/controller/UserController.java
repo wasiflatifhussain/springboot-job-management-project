@@ -1,7 +1,6 @@
 package com.example.user_service.controller;
 
-import com.example.user_service.model.Job;
-import com.example.user_service.model.User;
+import com.example.user_service.model.*;
 import com.example.user_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,11 +66,53 @@ public class UserController {
         }
     }
 
-    // POST /user/{id}/job-applications: get all job applications for user with id
+    // POST /users/{id}/job-applications: get all job applications for user with id
     // use jobIdsForJobsApplied to get all jobs applied to
     @GetMapping("/users/{id}/job-applications")
     public ResponseEntity<List<Job>> getJobApplicationsForUser(@PathVariable Long id) {
         return new ResponseEntity<>(userService.getJobApplicationsForUser(id), HttpStatus.OK);
     }
 
+    // GET /user/get-company/{companyId}: get company information with help of company id
+    @GetMapping("/users/get-company/{companyId}")
+    public ResponseEntity<CompanyWrapper> getCompanyInfo(@PathVariable Long companyId) {
+        System.out.println("Company id: " + companyId);
+        return new ResponseEntity<CompanyWrapper>(userService.getCompanyInfo(companyId), HttpStatus.OK);
+    }
+
+    // GET /user/get-company-reviews/{companyId}: get company reviews with help of company id
+    @GetMapping("/users/get-company-reviews/{companyId}")
+    public ResponseEntity<List<Review>> getCompanyReviews(@PathVariable Long companyId) {
+        return new ResponseEntity<>(userService.getCompanyReviews(companyId), HttpStatus.OK);
+    }
+
+    // GET /user/get-available-jobs : get all available jobs
+    @GetMapping("/users/get-available-jobs")
+    public ResponseEntity<List<Job>> getAvailableJobs() {
+        return new ResponseEntity<>(userService.getAvailableJobs(), HttpStatus.OK);
+    }
+
+    // GET /user/get-job-info/{jobId}: get job information with help of job id
+    @GetMapping("/users/get-job-info/{jobId}")
+    public ResponseEntity<Job> getJobInfo(@PathVariable Long jobId) {
+        return new ResponseEntity<>(userService.getJobById(jobId), HttpStatus.OK);
+    }
+
+    // GET /user/get-company-by-name/{companyName}: get company information with help of company name
+    @GetMapping("/users/get-company-by-name/{companyName}")
+    public ResponseEntity<CompanyWrapper> getCompanyByName(@PathVariable String companyName) {
+        return new ResponseEntity<>(userService.getCompanyByName(companyName), HttpStatus.OK);
+    }
+
+    // GET /user/get-jobs-by-name/{jobName}: get job information with help of job name
+    @GetMapping("/users/get-jobs-by-name")
+    public ResponseEntity<List<Job>> getJobsByName(@RequestParam String jobName) {
+        return new ResponseEntity<>(userService.getJobsByName(jobName), HttpStatus.OK);
+    }
+
+    // POST /users/leave-review/{userId}/{companyId}: leave review for company with help of user id and company id
+    @PostMapping("/users/leave-review/{userId}/{companyId}")
+    public ResponseEntity<Review> leaveReview(@PathVariable Long userId, @PathVariable Long companyId, @RequestBody Review review) {
+        return new ResponseEntity<>(userService.leaveReview(userId, companyId, review), HttpStatus.OK);
+    }
 }

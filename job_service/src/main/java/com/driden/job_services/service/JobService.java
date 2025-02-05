@@ -13,5 +13,5 @@ public interface JobService {
     boolean deleteJob(Long id);
     List<Job> getJobsByCompanyId(Long companyId);
     List<Job> fetchJobsByIds(List<Long> jobIds);
-
+    List<Job> getJobsByName(String name);
 }

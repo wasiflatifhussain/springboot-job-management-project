@@ -134,5 +134,14 @@ public class CompanyController {
         return new ResponseEntity<>(companyService.viewApplicationsForJob(companyId, jobId), HttpStatus.OK);
     }
 
-
+    // GET /companies/get-company-by-name/{companyName} - get company by name
+    @GetMapping("/companies/get-company-by-name/{companyName}")
+    public ResponseEntity<Company> getCompanyByName(@PathVariable String companyName) {
+        Company company = companyService.getCompanyByName(companyName);
+        if (company == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(company, HttpStatus.OK);
+        }
+    }
 }

@@ -77,4 +77,9 @@ public class JobServiceImplementation implements JobService {
     public List<Job> fetchJobsByIds(List<Long> jobIds) {
         return jobDao.fetchJobsByIds(jobIds);
     }
+
+    @Override
+    public List<Job> getJobsByName(String name) {
+        return jobDao.getJobsByName(name);
+    }
 }

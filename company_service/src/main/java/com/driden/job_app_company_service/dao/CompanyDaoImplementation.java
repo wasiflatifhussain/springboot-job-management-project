@@ -88,4 +88,18 @@ public class CompanyDaoImplementation implements CompanyDao {
             return false;
         }
     }
+
+    @Override
+    public Company getCompanyByName(String name) {
+        Session session = entityManager.unwrap(Session.class);
+        List<Company> companies = session.createQuery("from Company where name = :name", Company.class)
+                .setParameter("name", name)
+                .getResultList();
+        if (companies.size() == 0) {
+            return null;
+        }
+        else {
+            return companies.get(0);
+        }
+    }
 }

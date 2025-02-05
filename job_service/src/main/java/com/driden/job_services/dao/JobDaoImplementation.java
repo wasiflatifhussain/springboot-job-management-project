@@ -76,5 +76,13 @@ public class JobDaoImplementation implements JobDao {
         return jobs;
     }
 
+    @Override
+    public List<Job> getJobsByName(String name) {
+        Session session = entityManager.unwrap(Session.class);
+        List<Job> jobs = session.createQuery("from Job where title like :title", Job.class)
+                .setParameter("title", "%" + name + "%") // Add wildcards for partial matching
+                .getResultList();
+        return jobs;
+    }
 
 }

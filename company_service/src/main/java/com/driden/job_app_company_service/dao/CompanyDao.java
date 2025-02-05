@@ -11,4 +11,6 @@ public interface CompanyDao {
     Company updateCompany(Long id, Company company);
     boolean deleteCompany(Long id);
     boolean deleteJobIdFromCompany(Long companyId, Long jobId);
+
+    Company getCompanyByName(String name);
 }

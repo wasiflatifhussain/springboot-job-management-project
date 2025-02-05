@@ -21,4 +21,6 @@ public interface CompanyService {
 
     List<Review> getReviewsByCompanyId(Long companyId);
     List<User> viewApplicationsForJob(Long companyId, Long jobId);
+
+    Company getCompanyByName(String name);
 }
