@@ -31,4 +31,5 @@ public interface JobFeign {
     @PostMapping("/job-service/jobs/{jobId}/withdraw-applicant/{userId}")
     public ResponseEntity<Job> withdrawApplicant(@PathVariable Long jobId, @PathVariable Long userId);
 
+
 }

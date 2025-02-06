@@ -54,6 +54,20 @@ public class UserServiceImplementation implements UserService {
     @Transactional
     @Override
     public boolean deleteUser(Long id) {
+        User user = userDao.getUserById(id);
+
+        if (user == null) {
+            return false;
+        }
+
+        // withdraw from all jobs applied by this user
+        List<Long> jobIds = user.getJobIdsForJobsApplied();
+        for (Long jobId : jobIds) {
+            jobFeign.withdrawApplicant(jobId, id).getBody();
+        }
+
+        System.out.println("User applications deleted");
+
         return userDao.deleteUser(id);
     }
 

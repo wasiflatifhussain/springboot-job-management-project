@@ -63,6 +63,7 @@ public class UserDaoImplementation implements UserDao {
         if (user == null) {
             return false;
         }
+
         session.delete(user);
         return true;
     }
