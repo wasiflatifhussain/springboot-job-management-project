@@ -115,4 +115,19 @@ public class UserController {
     public ResponseEntity<Review> leaveReview(@PathVariable Long userId, @PathVariable Long companyId, @RequestBody Review review) {
         return new ResponseEntity<>(userService.leaveReview(userId, companyId, review), HttpStatus.OK);
     }
+
+    // POST /user/apply-job/{userId}/{jobId}: apply job for user with help of user id and job id
+    @PostMapping("/users/apply-job/{userId}/{jobId}")
+    public ResponseEntity<Job> applyJob(@PathVariable Long userId, @PathVariable Long jobId) {
+        return new ResponseEntity<>(userService.applyForJob(userId, jobId), HttpStatus.OK);
+    }
+
+    // POST /user/withdraw-application/{userId}/{jobId}: withdraw application for user with help of user id and job id
+    @PostMapping("/users/withdraw-application/{userId}/{jobId}")
+    public ResponseEntity<String> withdrawApplicant(@PathVariable Long userId, @PathVariable Long jobId) {
+        String status = userService.withdrawApplicant(userId, jobId);
+        System.out.println("Status message: " + status);
+        return new ResponseEntity<>(status, HttpStatus.OK);
+    }
+
 }

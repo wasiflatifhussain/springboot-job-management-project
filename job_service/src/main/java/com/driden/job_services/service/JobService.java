@@ -14,4 +14,6 @@ public interface JobService {
     List<Job> getJobsByCompanyId(Long companyId);
     List<Job> fetchJobsByIds(List<Long> jobIds);
     List<Job> getJobsByName(String name);
+    Job processNewApplicant(Long jobId, Long userId);
+    Job withdrawApplicant(Long jobId, Long userId);
 }

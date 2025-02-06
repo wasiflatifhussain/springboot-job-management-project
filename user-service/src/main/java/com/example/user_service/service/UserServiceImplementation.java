@@ -123,6 +123,7 @@ public class UserServiceImplementation implements UserService {
         return job;
     }
 
+    @Transactional
     @Override
     public CompanyWrapper getCompanyByName(String companyName) {
         ResponseEntity<Company> response = companyFeign.getCompanyByName(companyName);
@@ -144,11 +145,13 @@ public class UserServiceImplementation implements UserService {
         return new CompanyWrapper(company, jobList, reviewList);
     }
 
+    @Transactional
     @Override
     public List<Job> getJobsByName(String jobName) {
         return jobFeign.getJobsByName(jobName).getBody();
     }
 
+    @Transactional
     @Override
     public Review leaveReview(Long userId, Long companyId, Review review) {
         User user = userDao.getUserById(userId);
@@ -167,5 +170,68 @@ public class UserServiceImplementation implements UserService {
         return null;
     }
 
+    @Transactional
+    @Override
+    public Job applyForJob(Long userId, Long jobId) {
+        User user = userDao.getUserById(userId);
+        if (user == null) {
+            return null;
+        }
+        Job job = jobFeign.getJobById(jobId).getBody();
+        if (job == null) {
+            return null;
+        }
+        if (job.getCompanyId().equals(user.getCurrentCompanyId())) {
+            return null;
+        }
 
+        // update user's jobIdsForJobsApplied
+        List<Long> jobIds = user.getJobIdsForJobsApplied();
+        if (jobIds.contains(jobId)) {
+            System.out.println("User has already applied for this job");
+            return null;
+        }
+
+
+        jobIds.add(jobId);
+        user.setJobIdsForJobsApplied(jobIds);
+        userDao.updateUser(userId, user);
+
+        // update job's applicantIds
+        ResponseEntity<Job> response = jobFeign.processNewApplicant(jobId, userId);
+
+        return response.getBody();
+    }
+
+    @Transactional
+    @Override
+    public String withdrawApplicant(Long userId, Long jobId) {
+        User user = userDao.getUserById(userId);
+        if (user == null) {
+            return null;
+        }
+        Job job = jobFeign.getJobById(jobId).getBody();
+        if (job == null) {
+            return null;
+        }
+
+        List<Long> jobIds = user.getJobIdsForJobsApplied();
+        if (!jobIds.contains(jobId)) {
+            return "User has not applied for this job";
+        }
+
+        jobIds.remove(jobId);
+        user.setJobIdsForJobsApplied(jobIds);
+        userDao.updateUser(userId, user);
+
+        // update job's applicantIds
+        ResponseEntity<Job> response = jobFeign.withdrawApplicant(jobId, userId);
+        if (response.getBody() == null) {
+            return null;
+        }
+        else {
+            return "Application withdrawn";
+        }
+
+    }
 }

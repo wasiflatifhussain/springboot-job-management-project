@@ -78,8 +78,44 @@ public class JobServiceImplementation implements JobService {
         return jobDao.fetchJobsByIds(jobIds);
     }
 
+    @Transactional
     @Override
     public List<Job> getJobsByName(String name) {
         return jobDao.getJobsByName(name);
+    }
+
+    @Transactional
+    @Override
+    public Job processNewApplicant(Long jobId, Long userId) {
+        Job job = jobDao.getJobById(jobId);
+        if (job == null) {
+            return null;
+        }
+        List<Long> applicantIds = job.getApplicantIds();
+        if (applicantIds == null) {
+            applicantIds = new ArrayList<>();
+        }
+        applicantIds.add(userId);
+        job.setApplicantIds(applicantIds);
+        return jobDao.updateJob(jobId, job);
+    }
+
+    @Transactional
+    @Override
+    public Job withdrawApplicant(Long jobId, Long userId) {
+        Job job = jobDao.getJobById(jobId);
+        if (job == null) {
+            return null;
+        }
+        List<Long> applicantIds = job.getApplicantIds();
+        if (applicantIds == null) {
+            return null;
+        }
+        if (!applicantIds.contains(userId)) {
+            return null;
+        }
+        applicantIds.remove(userId);
+        job.setApplicantIds(applicantIds);
+        return jobDao.updateJob(jobId, job);
     }
 }

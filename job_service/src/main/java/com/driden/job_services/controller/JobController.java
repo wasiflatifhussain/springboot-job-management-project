@@ -86,5 +86,16 @@ public class JobController {
         return new ResponseEntity<>(jobService.getJobsByName(jobName), HttpStatus.OK);
     }
 
+    // POST /jobs/{jobId}/new-applicant/{userId}: process new applicant for job
+    @PostMapping("/jobs/{jobId}/new-applicant/{userId}")
+    public ResponseEntity<Job> processNewApplicant(@PathVariable Long jobId, @PathVariable Long userId) {
+        return new ResponseEntity<>(jobService.processNewApplicant(jobId, userId), HttpStatus.OK);
+    }
+
+    // POST /jobs/{jobId}/new-applicant/{userId}: process new applicant for job
+    @PostMapping("/jobs/{jobId}/withdraw-applicant/{userId}")
+    public ResponseEntity<Job> withdrawApplicant(@PathVariable Long jobId, @PathVariable Long userId) {
+        return new ResponseEntity<>(jobService.withdrawApplicant(jobId, userId), HttpStatus.OK);
+    }
 
 }

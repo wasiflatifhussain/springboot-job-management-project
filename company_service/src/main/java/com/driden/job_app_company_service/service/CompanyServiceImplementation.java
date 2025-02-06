@@ -57,7 +57,25 @@ public class CompanyServiceImplementation implements CompanyService {
     @Transactional
     @Override
     public boolean deleteCompany(Long id) {
-        return companyDao.deleteCompany(id);
+        System.out.println("Deleting company");
+        // delete all jobs associated with company
+        List<Long> jobIds = companyDao.getCompanyById(id).getJobIds();
+        for (Long jobId : jobIds) {
+            jobFeign.deleteJob(jobId);
+            System.out.println("Job deleted");
+        }
+        // delete all reviews associated with company
+        List<Long> reviewIds = companyDao.getCompanyById(id).getReviewIds();
+        for (Long reviewId : reviewIds) {
+            reviewFeign.deleteReview(reviewId);
+            System.out.println("Review deleted");
+        }
+        System.out.println("All reviews and jobs deleted");
+        boolean status = companyDao.deleteCompany(id);
+        if (status) {
+           return true;
+        }
+        return false;
     }
 
     @Transactional
@@ -104,6 +122,7 @@ public class CompanyServiceImplementation implements CompanyService {
         // then search if jobId is in list
         // if it is, make request to job-service to delete job
         // if not, return false
+        // finallly, remove job id from company jobids list
 
         List<Long> jobIds = companyDao.getCompanyById(companyId).getJobIds();
         if (!jobIds.contains(id)) {

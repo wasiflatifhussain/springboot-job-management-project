@@ -22,4 +22,7 @@ public interface UserService {
     List<Job> getJobsByName(String jobName);
 
     Review leaveReview(Long userId, Long companyId, Review review);
+
+    Job applyForJob(Long userId, Long jobId);
+    String withdrawApplicant(Long userId, Long jobId);
 }
