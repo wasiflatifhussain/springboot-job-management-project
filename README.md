@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Spring Boot Job Management Project
 
 This is a **microservices-based job management application** built using **Spring Boot**. The project implements a scalable architecture by breaking down functionalities into multiple services, each handling a specific responsibility. The primary goal of the application is to manage jobs, companies, users, and reviews efficiently while leveraging a modular design for maintainability and extensibility.
@@ -27,6 +26,7 @@ This is a **microservices-based job management application** built using **Sprin
 - **Hibernate**: ORM for database operations.
 - **Postman**: API testing.
 - **Git**: Version control.
+---
 
 # Job Service API
 
