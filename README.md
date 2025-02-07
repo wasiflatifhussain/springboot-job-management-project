@@ -227,7 +227,7 @@ The **Company Service** manages all operations related to companies, including h
 
 ---
 
-# User Service API Documentation
+# User Service API
 
 The **User Service** is responsible for managing user-related operations, including user creation, profile management, job applications, and leaving reviews for companies. It communicates with the **Job Service** and **Company Service** to provide comprehensive user functionality.
 
@@ -363,7 +363,7 @@ The **User Service** is responsible for managing user-related operations, includ
 
 ---
 
-# Review Service API Documentation
+# Review Service API
 
 The **Review Service** is responsible for handling company reviews. Users can leave reviews for companies they have worked at, update their reviews, or delete them. This service communicates with the **Company Service** to fetch company reviews.
 
@@ -417,7 +417,3 @@ The **Review Service** is responsible for handling company reviews. Users can le
 
 ---
 
-
-
-
-=======
